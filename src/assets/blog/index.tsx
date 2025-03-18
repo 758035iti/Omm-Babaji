@@ -1,0 +1,14 @@
+export { default as blog1 } from "./blog1.jpg";
+export { default as blog2 } from "./blog2.jpg";
+export { default as blog3 } from "./blog3.jpg";
+export { default as author } from "./author.jpg";
+export { default as insta1 } from "./insta1.jpg";
+export { default as insta2 } from "./insta2.jpg";
+export { default as insta3 } from "./insta3.jpg";
+export { default as insta4 } from "./insta4.jpg";
+export { default as insta5 } from "./insta5.jpg";
+export { default as insta6 } from "./insta6.jpg";
+export { default as insta7 } from "./insta7.jpg";
+export { default as insta8 } from "./insta8.jpg";
+export { default as insta9 } from "./insta9.jpg";
+export { default as bg } from "./bg.jpeg";

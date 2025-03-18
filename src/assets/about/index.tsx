@@ -1,0 +1,13 @@
+export { default as mandir2 } from "./mandir2.jpg";
+export { default as mahadev } from "./mahadev.jpg";
+export { default as ganesh } from "./ganesh.jpg";
+export { default as mandir } from "./mandir.jpg";
+export { default as ghat } from "./ghat.jpg";
+export { default as omm } from "./omm.jpg";
+export { default as ghat2 } from "./ghat2.jpg";
+export { default as ghat3 } from "./ghat3.jpg";
+export { default as diya } from "./diya.jpeg";
+export { default as holi } from "./holi.jpeg";
+export { default as raksyabadhan } from "./raksyabadhan.jpg";
+export { default as girl1 } from "./girl1.jpg";
+export { default as girl2 } from "./girl2.jpg";
