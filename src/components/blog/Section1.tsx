@@ -55,7 +55,7 @@ const Section1 = () => {
             survived not only five centuries, but also the leap into electronic
             typesetting
           </p>
-          <hr className="border-t border-gray-500 my-5" />
+          {/* <hr className="border-t border-gray-500 my-5" />
           <p className="font-extrabold text-2xl text-red-800 font-sans my-3 lg:text-3xl">
             Should I Believe in Rebirth?
           </p>
@@ -98,7 +98,7 @@ const Section1 = () => {
                 People ask questions related to Hinduism
               </p>
             </span>
-          </span>
+          </span> */}
           <div className="md:flex md:gap-6 my-4 ">
             {blogarr.map((item) => (
               <div
@@ -172,21 +172,6 @@ const Section1 = () => {
                 </div>
               ))}
             </div>
-          </div>
-          <div className="h-auto w-full border-2 my-4 border-gray-200 rounded-2xl p-3">
-            <p className="text-2xl text-red-800 py-2 font-bold">Twitter Feed</p>
-
-            {twiterarr.map((item) => (
-              <div className=" flex flex-col">
-                <span key={item.id.toString()} className="flex gap-7">
-                  <TwitterIcon className="text-slate-400" />
-                  <p className="text-slate-400">{item.description}</p>
-                </span>
-                <p className="text-red-700 text-sm font-bold left-3 pl-9">
-                  {item.date}
-                </p>
-              </div>
-            ))}
           </div>
         </div>
       </div>

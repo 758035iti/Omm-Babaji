@@ -33,11 +33,7 @@ const Content1 = () => {
               Some Important Life Lessons From Bhagwat Gita
             </p>
           }
-          subtitle="
-            Temple is a place where Hindu worship our Bhagwan Ram, Shiva,
-            Vishnu, Krishna etc. Proin eget tortor industry's standard dummy
-            text ever since the 1500s, when an unknown printer took a galley of
-            type. People ask questions related to Hinduism. "
+          subtitle="The Bhagavad Gita offers timeless wisdom for leading a righteous and fulfilling life. It teaches us about duty (Dharma), selfless action (Karma Yoga), and the importance of devotion (Bhakti). Through its verses, we learn how to navigate life's challenges with wisdom, courage, and inner peace. "
         >
           <Event title="" description={[]} />
         </Events>
@@ -50,7 +46,7 @@ const Content1 = () => {
               People ask questions related to Hinduism
             </p>
           }
-          subtitle="People ask questions related to Hinduism. Temple is a place where Hindu worship our Bhagwan Ram, Shiva, Vishnu, Krishna etc."
+          subtitle="Hinduism, one of the world's oldest religions, is rich with traditions, scriptures, and philosophies. Devotees often seek answers to profound questions—What is Dharma? What is the significance of different gods and rituals? This section explores these common inquiries and provides insights based on ancient scriptures."
         >
           <Event title="" description={[]} />
         </Events>
@@ -60,11 +56,10 @@ const Content1 = () => {
           startDate="2024/06/01"
           title={
             <p className="text-3xl font-bold">
-              Some Important Life Lessons From Bhagwat Gita
+              Timeless Wisdom from the Bhagavad Gita
             </p>
           }
-          subtitle="Temple is a place where Hindu worship our Bhagwan Ram, Shiva, Vishnu, Krishna etc.
-Proin eget tortor industry's standard dummy text ever since the 1500s..."
+          subtitle="The Bhagavad Gita serves as a guiding light, offering deep insights into self-realization, perseverance, and inner peace. Lord Krishna’s teachings inspire us to embrace challenges with a calm mind, focus on our actions without worrying about outcomes, and cultivate a life rooted in wisdom and purpose. Even today, these lessons empower us to lead a fulfilling and spiritually enriched life."
         >
           <Event title="" description={[]} />
         </Events>

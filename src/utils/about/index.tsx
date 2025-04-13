@@ -41,28 +41,33 @@ export const contentarr: contentarrType[] = [
   {
     id: 1,
     icon: <CheckIcon />,
-    title: "Peace of Mind",
+    title: "Verified and Experienced Pandits",
   },
   {
     id: 2,
     icon: <CheckIcon />,
-    title: "Set For Pastor",
+    title: " Customized Puja Packages",
   },
   {
     id: 3,
     icon: <CheckIcon />,
-    title: "100% Satisfaction",
+    title: "Easy Online Booking and Secure Payments",
   },
   {
     id: 4,
     icon: <CheckIcon />,
-    title: "Trusted Company",
+    title: "Rituals Performed as per Vedic Traditions",
+  },
+  {
+    id: 5,
+    icon: <CheckIcon />,
+    title: "All-Inclusive Puja Samagri Options",
   },
 ];
-export const cardarr:cardarrType[] = [
+export const cardarr: cardarrType[] = [
   {
     id: 1,
-    img: diya ,
+    img: diya,
     title: "Education for all rural children are necessary.",
     name: "Yesh Chopra",
     img1: girl1,
