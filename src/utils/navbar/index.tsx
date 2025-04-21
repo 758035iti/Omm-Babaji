@@ -1,4 +1,5 @@
 import { navArrType } from "@/types"
+import PersonIcon from '@mui/icons-material/Person';
 export const navArr:navArrType[]= [
     {
         id: 1,
@@ -27,7 +28,25 @@ export const navArr:navArrType[]= [
     },
     {
         id: 6,
+        title: 'Booking Process',
+        url: '/booking_process'
+    },
+    {
+        id: 7,
         title: 'Login',
-        url: '/login'
+        url: '/login',
+        submenu: [
+            { name: "User", path: "/user" },
+            {name: "Brahmin",  path: "/brahmin" },
+            { name: "Admin", path: "/admin" },
+          ],
+    },
+    {
+        id: 8,
+        icon: <PersonIcon />,
+        url: '/profile',
+        title: '',
     }
 ]
+
+  

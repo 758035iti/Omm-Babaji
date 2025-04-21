@@ -1,4 +1,4 @@
-import { back1, s1, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s2, s20, s21, s3, s4, s5, s6, s7, s8, s9 } from "@/assets/PujaServices";
+import { s1, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s2, s21, s3, s4, s6, s7, s8, s9 } from "@/assets/PujaServices";
 import { pujaServicesArrType } from "@/types";
 
 export const pujaServicesArr:pujaServicesArrType[]=[

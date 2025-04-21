@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { blog1, author } from "@/assets/blog";
-import { img } from "framer-motion/client";
 import CheckIcon from "@mui/icons-material/Check";
 import { blogarr, categoryarr, imagearr5, twiterarr } from "@/utils/blog";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -9,6 +8,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import Link from "next/link";
 const Section1 = () => {
   return (
     <div>
@@ -129,14 +129,22 @@ const Section1 = () => {
               aliquet elit"
             </p>
             <span className="flex gap-2">
+            <Link href="https://www.facebook.com/">
               <FacebookIcon className="!text-xl text-gray-400" />
+            </Link>
+            <Link href="https://www.linkedin.com/feed/">
               <LinkedInIcon className="!text-xl text-gray-400" />
+            </Link>
+            <Link href="https://www.twitter.com/">
               <TwitterIcon className="!text-xl text-gray-400" />
+            </Link>
+            <Link href="https://www.youtube.com/">
               <YouTubeIcon className="!text-xl text-gray-400" />
+            </Link>
             </span>
           </div>
           <div className="border-2 border-gray-200 rounded-2xl h-auto w-full  p-2 flex flex-col my-4 ">
-            <p className="text-red-700 text-xl font-bold">our Categories</p>
+            <p className="text-red-700 text-xl font-bold">Our Categories</p>
             <div className="">
               {categoryarr.map((item) => (
                 <button
@@ -177,8 +185,8 @@ const Section1 = () => {
             <p className="text-2xl text-red-800 py-2 font-bold">Twitter Feed</p>
 
             {twiterarr.map((item) => (
-              <div className=" flex flex-col">
-                <span key={item.id.toString()} className="flex gap-7">
+              <div className=" flex flex-col" key={item.id.toString()}>
+                <span  className="flex gap-7">
                   <TwitterIcon className="text-slate-400" />
                   <p className="text-slate-400">{item.description}</p>
                 </span>

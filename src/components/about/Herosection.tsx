@@ -2,6 +2,7 @@
 import React from "react";
 import { imagearr } from "@/utils/about/index";
 import { contentarr } from "@/utils/about/index";
+import Link from "next/link";
 const Herosection = () => {
   return (
     <>
@@ -38,9 +39,11 @@ const Herosection = () => {
             followers and We are a Hindu that belives in Lord Rama and Vishnu
             Deva.
           </p>
+          <Link href="/pujaservices">
           <button className="bg-black rounded-lg text-white px-8 py-5">
-            Lear More
+            Learn More
           </button>
+          </Link>
         </div>
       </div>
     </>

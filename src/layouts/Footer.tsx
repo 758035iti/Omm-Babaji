@@ -47,9 +47,9 @@ const Footer = () => {
             </span>
           </div>
           <div className=" flex flex-col gap-5">
-            <p className="text-white font-bold text-xl">Customer Resources
+            <p className="text-white font-bold text-xl">Customer Resources</p>
             <div className="w-52 h-1  bg-orange-400 mt-2"></div>
-            </p>
+            
            
             <div className="list-disc list-inside text-white ">
               {listarr.map((item, index) => (
@@ -64,8 +64,8 @@ const Footer = () => {
           <div className="">
             <ul className="list-disc list-inside text-white gap-3 mt-5 ">
               {listarr1.map((item, index) => (
-                <Link href={'/'}>
-                <li key={index.toString()} className="text-white text-sm uppercase gap-5">
+                <Link href={'/'} key={index.toString()}>
+                <li  className="text-white text-sm uppercase gap-5">
                   {item.title}
                 </li>
                 </Link>
@@ -73,9 +73,9 @@ const Footer = () => {
             </ul>
           </div>
           <div className="flex flex-col gap-3">
-            <p className="text-white font-bold text-xl">Contact
+            <p className="text-white font-bold text-xl">Contact</p>
             <div className="w-32 h-1  bg-orange-400 mt-2"></div>
-            </p>
+            
             <span className="gap-1 flex flex-col">
               <span className="flex gap-1">
                 <LocalPhoneIcon className="text-white" />
@@ -101,16 +101,15 @@ const Footer = () => {
               Pokalwada, Manikonda, Hyderabad, Telangana, India, 500089
             </p>
             </Link>
-            <p className="text-white font-bold text-xl">
-              Secure Online Payment
+            <p className="text-white font-bold text-xl">Secure Online Payment</p>
               <div className="w-58 h-1  bg-orange-400 mt-2"></div>
-            </p>
+            
             <div className="flex gap-2 mt-2">
               {imagearr.map((item, index) => (
-                <Link href={`${item.url}`}>
+                <Link href={`${item.url}`} key={item.id.toString()}>
                 
                 <img
-                  key={item.id.toString()}
+                  
                   src={item.img.src}
                   alt={`image-${index}`}
                   className="h-6 w-11"

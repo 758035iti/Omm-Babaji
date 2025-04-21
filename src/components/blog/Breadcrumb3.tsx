@@ -1,5 +1,4 @@
 import React from "react";
-import { mandir2 } from "@/assets/about";
 import { bg } from "@/assets/blog";
 const Breadcrumb3 = () => {
   return (

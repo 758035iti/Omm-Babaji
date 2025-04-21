@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import { ghat } from "@/assets/about";
-import { TextField } from "@mui/material";
 import { motion } from "framer-motion";
 import { omm } from "@/assets/about";
+import Link from "next/link";
 const Form1 = () => {
   return (
     <div>
@@ -47,9 +47,11 @@ const Form1 = () => {
             placeholder="Enter a Message"
             className="bg-white/40 rounded-lg w-full placeholder:text-white mt-3 p-3 "
           ></textarea>
+          <Link href="/contactus">
           <button className="bg-orange-600 text-white w-full rounded-full p-5 lg:p-3 mt-3">
             GET A QUOTE
           </button>
+          </Link>
         </div>
 
         <div className="lg:w-1/2 w-full h-full absolute  right-0  items-center justify-center text-white text-center hidden lg:flex  flex-col  ">
@@ -64,9 +66,21 @@ const Form1 = () => {
 
           {/* Contact Info */}
           <h2 className="text-2xl font-semibold">Contact Us</h2>
-          <p className="text-lg"> Bhubaneswar, India</p>
-          <p className="text-lg"> +91 12345 67890</p>
-          <p className="text-lg"> contact@example.com</p>
+          <p className="text-lg"> 
+            <Link href="https://en.wikipedia.org/wiki/Bhubaneswar">
+            Bhubaneswar, India
+            </Link>
+          </p>
+          <p className="text-lg"> 
+            <Link href="tel:7848923525">
+            +91 7848923525
+            </Link>
+          </p>
+          <p className="text-lg"> 
+            <Link href="mailto:itishreeS977@gmail.com">
+            contact@example.com
+            </Link>
+          </p>
         </div>
       </div>
     </div>
