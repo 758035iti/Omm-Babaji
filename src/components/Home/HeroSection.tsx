@@ -190,8 +190,8 @@ export default function HeroSection() {
           <li className="text-xl">Sit back and relax. We&rsquo;re on it!</li>
         </div>
         <div className="justify-center items-center flex">
-          {/* ✅ Optimized Image */}
-          <Image src={pandit} className="lg:w-full lg:h-full w-full h-auto" alt="Pandit" />
+  
+          <img src={pandit.src} className="lg:w-full lg:h-full w-full h-auto" alt="Pandit" />
         </div>
       </div>
 

@@ -28,7 +28,7 @@ export const navArr:navArrType[]= [
     },
     {
         id: 6,
-        title: 'Booking Process',
+        title: 'Process',
         url: '/booking_process'
     },
     {

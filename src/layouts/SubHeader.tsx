@@ -82,13 +82,13 @@ export default function SubHeader() {
 
   return (
     <div>
-      <section className="hidden lg:block relative w-full h-20">
+      <section className="hidden lg:block  w-full h-20 sticky top-0 z-50">
             <div className="absolute top-0 left-0 w-full h-20 bg-white">
               <Link href={'/'}>
                 <img src={logo.src} className="justify-start w-24 h-20"/>
               </Link>
             </div>
-        <div className="flex justify-end items-center gap-5 text-red-900 p-5 shadow-2xl shadow-black ">
+        <div className="flex justify-end items-center gap-1 text-red-900 p-5 shadow-2xl shadow-black ">
           {navArr.map((item) => (
             <div
               key={item.id.toString()}

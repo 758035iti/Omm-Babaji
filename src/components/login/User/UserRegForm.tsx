@@ -95,11 +95,14 @@ export default function UserRegForm() {
           <input {...register("confirmPassword")} type="password" placeholder="Confirm Your Password" className="bg-slate-300 p-2 rounded" />
           <p className="text-red-500 text-sm">{errors.confirmPassword?.message}</p>
 
-          <Link href={'/UserLoginForm'} className="w-full px-4 py-0  bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center">
+          <Link href={'/UserLoginForm'} className="w-full flex flex-col px-4 py-0  bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center">
           <button type="submit" className=" text-white rounded-lg p-2 transition ">
             Register
           </button>
           </Link>
+          <p className="text-white text-center">Already Register ?
+            <Link href={'/UserLoginForm'} className="text-blue-500 underline"> Login Here</Link>
+          </p>
         </form>
       </div>
     </div>

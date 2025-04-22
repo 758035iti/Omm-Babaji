@@ -17,25 +17,43 @@ export default function ProfileForm() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
 
-    const formData = new FormData(e.target as HTMLFormElement);
     if (profilePhoto) {
       formData.append('profilePhoto', profilePhoto);
     }
 
-    
-    console.log('Form submitted');
+    try {
+      const response = await fetch('http://localhost:4002/api/profile/create-profile', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log('Success:', data);
+
+      // Optional: Alert or clear form
+      alert('Profile created successfully!');
+      form.reset();
+      setPreview(null);
+      setProfilePhoto(null);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong while submitting the form.');
+    }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 mt-10 bg-white shadow-lg rounded-2xl shadow-black ">
-      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800 ">Create Profile</h2>
+    <div className="max-w-3xl mx-auto p-6 mt-10 bg-white shadow-lg rounded-2xl shadow-black">
+      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Create Profile</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6 " encType="multipart/form-data">
+      <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
         <div className="flex flex-col items-center space-y-4">
-          <label className="text-sm font-medium text-gray-700 justify-start">Profile Photo</label>
+          <label className="text-sm font-medium text-gray-700">Profile Photo</label>
           <input
             type="file"
             accept="image/*"
@@ -43,7 +61,7 @@ export default function ProfileForm() {
             className="block w-full text-sm text-gray-500 text-center"
           />
           {preview && (
-            <div className="w-32 h-32 rounded-full overflow-hidden shadow border ">
+            <div className="w-32 h-32 rounded-full overflow-hidden shadow border">
               <img
                 src={preview}
                 alt="Profile Preview"
@@ -53,32 +71,19 @@ export default function ProfileForm() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium ">Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter email"
-              className="input bg-gray-300"
-              required
-            />
+            <label className="block text-sm font-medium">Email</label>
+            <input type="email" name="email" placeholder="Enter email" className="input bg-gray-300" required />
           </div>
 
           <div>
             <label className="block text-sm font-medium">Aadhaar Number</label>
-            <input
-              type="text"
-              name="aadhaar"
-              placeholder="XXXX XXXX XXXX"
-              className="input bg-gray-300"
-              required
-              maxLength={12}
-            />
+            <input type="text" name="aadhaar" placeholder="XXXX XXXX XXXX" className="input bg-gray-300" required maxLength={12} />
           </div>
 
           <div>
-            <label className="block text-sm font-medium ">Registration Type</label>
+            <label className="block text-sm font-medium">Registration Type</label>
             <select name="registrationType" className="input bg-gray-300" required>
               <option value="">Select Type</option>
               <option value="vendor">User</option>
@@ -88,84 +93,43 @@ export default function ProfileForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium ">Phone</label>
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Enter phone number"
-              className="input bg-gray-300"
-              required
-            />
+            <label className="block text-sm font-medium">Phone</label>
+            <input type="tel" name="phone" placeholder="Enter phone number" className="input bg-gray-300" required />
           </div>
 
           <div>
-            <label className="block text-sm font-medium ">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter password"
-              className="input bg-gray-300"
-              required
-            />
+            <label className="block text-sm font-medium">Password</label>
+            <input type="password" name="password" placeholder="Enter password" className="input bg-gray-300" required />
           </div>
 
           <div>
-            <label className="block text-sm font-medium ">Language</label>
-            <input
-              type="text"
-              name="language"
-              placeholder="Preferred language"
-              className="input bg-gray-300"
-            />
+            <label className="block text-sm font-medium">Language</label>
+            <input type="text" name="language" placeholder="Preferred language" className="input bg-gray-300" />
           </div>
 
           <div>
             <label className="block text-sm font-medium">Address</label>
-            <input
-              type="text"
-              name="address"
-              placeholder="Street address"
-              className="input bg-gray-300"
-              required
-            />
+            <input type="text" name="address" placeholder="Street address" className="input bg-gray-300" required />
           </div>
 
           <div>
-            <label className="block text-sm font-medium ">Area</label>
-            <input
-              type="text"
-              name="area"
-              placeholder="Local area"
-              className="input bg-gray-300"
-            />
+            <label className="block text-sm font-medium">Area</label>
+            <input type="text" name="area" placeholder="Local area" className="input bg-gray-300" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium ">City</label>
-            <input
-              type="text"
-              name="city"
-              placeholder="City name"
-              className="input bg-gray-300"
-            />
+            <label className="block text-sm font-medium">City</label>
+            <input type="text" name="city" placeholder="City name" className="input bg-gray-300" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium ">State</label>
-            <input
-              type="text"
-              name="state"
-              placeholder="State name"
-              className="input bg-gray-300"
-            />
+            <label className="block text-sm font-medium">State</label>
+            <input type="text" name="state" placeholder="State name" className="input bg-gray-300" />
           </div>
         </div>
 
         <div className="text-center">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
+          <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
             Submit
           </button>
         </div>
