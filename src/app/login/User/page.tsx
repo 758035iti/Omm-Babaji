@@ -1,4 +1,3 @@
-import UserLoginForm from "@/components/login/User/UserLoginForm";
 import UserRegForm from "@/components/login/User/UserRegForm";
 import React from "react";
 

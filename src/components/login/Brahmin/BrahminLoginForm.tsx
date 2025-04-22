@@ -1,83 +1,182 @@
 "use client";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { bg3 } from "@/assets/login";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
-// Define the form data structure
-interface AdminLoginFormData {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
+const BrahminLoginForm = () => {
+  const router = useRouter();
 
-// Validation Schema
-const schema = yup.object().shape({
-  email: yup.string().required("Email is required").email("Invalid email format"),
-  password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
-});
-
-export default function AdminLoginForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AdminLoginFormData>({
-    resolver: yupResolver(schema),
-    defaultValues: { rememberMe: false }, // ✅ Fix: Now TypeScript knows the structure
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    userType: "brahmin", // pre-filled as required by backend
+    rememberMe: false,
   });
 
-  const onSubmit = (data: AdminLoginFormData) => {
-    alert("Admin Login Successful!");
-    console.log("Admin Login Data:", data);
+  const [errors, setErrors] = useState<{
+    username?: string;
+    password?: string;
+  }>({});
+
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+    setServerError("");
   };
 
+  const validateForm = () => {
+    const newErrors: {
+      username?: string;
+      password?: string;
+      userType?: string;
+    } = {};
+
+    if (!formData.username || formData.username.length < 3) {
+      newErrors.username = "Username must be at least 3 characters";
+    }
+
+    if (!formData.password || formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+    if (formData.userType.trim().toLowerCase() !== "brahmin") {
+      newErrors.userType = "User type must be 'brahmin'";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/Brahmin/login",
+        {
+          username: formData.username,
+          password: formData.password,
+          userType: formData.userType, // always "brahmin"
+        }
+      );
+
+      const { token, brahminId, userType } = response.data;
+
+      localStorage.setItem("brahminToken", token);
+      localStorage.setItem("brahminId", brahminId);
+      localStorage.setItem("userType", userType);
+
+      alert("Login Successful!");
+      router.push("/brahmin_dashboard");
+    } catch (error: unknown) {
+      setLoading(false);
+
+      if (axios.isAxiosError(error)) {
+        const serverMsg =
+          error.response?.data?.error || error.response?.data?.message;
+        setServerError(serverMsg || "Something went wrong. Please try again.");
+      } else {
+        setServerError("Unexpected error occurred. Try again later.");
+      }
+
+      console.error("Login error:", error);
+    }
+  };
   return (
-    <div className="relative bg-gradient-to-t from-pink-950 to-red-950 min-h-auto">
-      <div className="w-full h-[40rem]">
-        {/* <img src={bg3.src} className="w-full lg:h-[40rem] h-80 object-cover" alt="Background" /> */}
-        <p className="absolute top-0 left-1/2 transform -translate-x-1/2 text-4xl text-white font-bold mt-8">
-          Brahmin Login
-        </p>
-      </div>
+    <div className="relative bg-gradient-to-t from-pink-950 to-red-950 min-h-screen">
+      <p className="absolute top-0 left-1/2 transform -translate-x-1/2 text-4xl text-white font-bold mt-8">
+        Brahmin Login
+      </p>
 
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center h-screen">
         <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-1/3 h-auto bg-transparent border-2 border-white rounded-lg absolute top-48 left-1/2 -translate-x-1/2 p-5 flex flex-col gap-3 shadow-lg"
+          onSubmit={handleSubmit}
+          className="w-[90%] md:w-1/3 bg-transparent border-2 border-white rounded-lg p-6 shadow-lg"
         >
-          <label className="font-semibold text-gray-500">Username:</label>
-          <input
-            type="email"
-            {...register("email")}
-            placeholder="Enter Your Email"
-            className="bg-slate-200 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.email?.message}</p>
+          {serverError && (
+            <p className="text-red-500 text-sm text-center mb-4">
+              {serverError}
+            </p>
+          )}
 
-          <label className="font-semibold text-gray-500">Password:</label>
+          {/* Username */}
+          <label className="font-semibold text-gray-300">Username:</label>
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            placeholder="Enter Username"
+            className="bg-slate-200 p-2 rounded w-full mt-1"
+          />
+          {errors.username && (
+            <p className="text-red-500 text-sm">{errors.username}</p>
+          )}
+
+          {/* Password */}
+          <label className="font-semibold text-gray-300 mt-4 block">
+            Password:
+          </label>
           <input
             type="password"
-            {...register("password")}
-            placeholder="Enter Your Password"
-            className="bg-slate-200 p-2 rounded"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Enter Password"
+            className="bg-slate-200 p-2 rounded w-full mt-1"
           />
-          <p className="text-red-500 text-sm">{errors.password?.message}</p>
-
-          <div className="flex justify-between items-center">
-            <label className="flex items-center gap-2">
-              <input type="checkbox" {...register("rememberMe")} className="w-4 h-4 " />
-              <label className="font-semibold text-gray-300">Remember Me</label>
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
+          <label className="font-semibold text-gray-300 mt-4 block">
+            userType:
+          </label>
+          <input
+            type="text"
+            name="userType"
+            value={formData.userType}
+            onChange={handleChange}
+            placeholder="Enter Password"
+            className="bg-slate-200 p-2 rounded w-full mt-1"
+          />
+          {/* Remember Me and Forgot Password */}
+          <div className="flex justify-between items-center mt-4">
+            <label className="flex items-center gap-2 text-gray-300">
+              <input
+                type="checkbox"
+                name="rememberMe"
+                checked={formData.rememberMe}
+                onChange={handleChange}
+                className="w-4 h-4"
+              />
+              Remember Me
             </label>
-            <a href="#" className="text-blue-500 hover:underline text-sm">Forgot Password?</a>
+            <a href="#" className="text-blue-500 hover:underline text-sm">
+              Forgot Password?
+            </a>
           </div>
-
-          <button type="submit" className="bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600 transition">
-            Login
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className={`bg-blue-500 text-white rounded-lg p-2 w-full mt-6 hover:bg-blue-600 transition ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>
     </div>
   );
-}
+};
+
+export default BrahminLoginForm;

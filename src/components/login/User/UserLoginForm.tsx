@@ -1,27 +1,35 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import axios from "axios";
+
 export default function UserLoginForm() {
-  const router = useRouter();
+  // const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    username: "",
     password: "",
+    registrationType: "Yajamana", // default type
   });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [errors, setErrors] = useState<any>({});
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); // Clear error on input change
+    setErrors({ ...errors, [e.target.name]: "" });
   };
+
   const validate = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newErrors: any = {};
-    if (!formData.name || formData.name.length < 3)
-      newErrors.name = "Name must be at least 3 characters";
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email))
-      newErrors.email = "Valid email is required";
+    if (!formData.username || formData.username.length < 3)
+      newErrors.username = "Username must be at least 3 characters";
     if (!formData.password || formData.password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
+    if (!formData.registrationType)
+      newErrors.registrationType = "Registration type is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -33,13 +41,14 @@ export default function UserLoginForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/login",
+        "http://localhost:4002/api/User/login",
         formData
       );
       if (response.status === 200) {
         alert("Login successful!");
         // router.push("/dashboard");
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error);
       alert("Invalid credentials or something went wrong.");
@@ -59,27 +68,16 @@ export default function UserLoginForm() {
           onSubmit={handleSubmit}
           className="w-1/3 h-auto border-2 border-white bg-transparent rounded-lg absolute top-32 left-1/2 -translate-x-1/2 p-5 flex flex-col gap-3 shadow-lg"
         >
-          <label className="font-semibold text-gray-500">Name:</label>
+          <label className="font-semibold text-gray-500">Username:</label>
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="username"
+            value={formData.username}
             onChange={handleChange}
-            placeholder="Enter Your Name"
+            placeholder="Enter Your Username"
             className="bg-slate-200 p-2 rounded"
           />
-          <p className="text-red-500 text-sm">{errors.name}</p>
-
-          <label className="font-semibold text-gray-500">Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter Your Email"
-            className="bg-slate-300 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.email}</p>
+          <p className="text-red-500 text-sm">{errors.username}</p>
 
           <label className="font-semibold text-gray-500">Password:</label>
           <input
@@ -91,6 +89,22 @@ export default function UserLoginForm() {
             className="bg-slate-300 p-2 rounded"
           />
           <p className="text-red-500 text-sm">{errors.password}</p>
+
+          <label className="font-semibold text-gray-500">
+            Registration Type:
+          </label>
+          <select
+            name="registrationType"
+            value={formData.registrationType}
+            onChange={handleChange}
+            className="bg-slate-300 p-2 rounded"
+          >
+            <option value="">Select Type</option>
+            <option value="Yajamana">Yajamana</option>
+            <option value="Brahmin">Brahmin</option>
+            <option value="Admin">Admin</option>
+          </select>
+          <p className="text-red-500 text-sm">{errors.registrationType}</p>
 
           <button
             type="submit"

@@ -1,241 +1,622 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// "use client";
+// import React, { useState, ChangeEvent } from "react";
+// import { useRouter } from "next/navigation";
+// import axios from "axios";
+
+// const BrahminRegistration = () => {
+//   const router = useRouter();
+
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     username: "",
+//     email: "",
+//     phoneNumber: "",
+//     password: "",
+//     country: "",
+//     state: "",
+//     city: "",
+//     experience: 0,
+//     pujaType: "",
+//     userType: "brahmin",
+//   });
+
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   const [errors, setErrors] = useState<any>({});
+//   // const [errors, setErrors] = useState<FormErrors>({});
+
+//   // inside validateForm:
+
+//   const handleInputChange = (
+//     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+//   ) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     setErrors((prev: any) => ({ ...prev, [name]: "" }));
+//   };
+
+//   const validateForm = () => {
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     const newErrors: any = {};
+
+//     if (!formData.name || formData.name.length < 3)
+//       newErrors.name = "Name must be at least 3 characters";
+
+//     if (!formData.username || formData.username.length < 3)
+//       newErrors.username = "Username must be at least 3 characters";
+
+//     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email))
+//       newErrors.email = "Valid email is required";
+
+//     if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber))
+//       newErrors.phoneNumber = "Phone number must be 10 digits";
+
+//     if (!formData.password || formData.password.length < 6)
+//       newErrors.password = "Password must be at least 6 characters";
+
+//     if (!formData.country) newErrors.country = "Country is required";
+//     if (!formData.state) newErrors.state = "State is required";
+//     if (!formData.city) newErrors.city = "City is required";
+//     if (!formData.pujaType) newErrors.pujaType = "Puja Type is required";
+//     if (!formData.userType) newErrors.userType = "user Type is required";
+//     if (formData.experience <= 0)
+//       newErrors.experience = "Experience must be greater than 0";
+
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   const handleRegister = async () => {
+//     if (!validateForm()) return;
+
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:4002/api/brahmin/register",
+//         formData
+//       );
+//       if (response.status === 200) {
+//         alert("You are registered successfully");
+//         router.push("/brahmin_login");
+//       }
+//     } catch (error) {
+//       console.error(error);
+//       alert("Something went wrong. Please try again.");
+//     }
+//   };
+
+//   return (
+//     <section className="bg-gradient-to-t from-pink-950 to-red-950 w-full h-auto px-4 md:px-6 py-16 flex justify-center items-center">
+//       <form className="bg-opacity-40 shadow-lg bg-transparent w-full max-w-2xl border-2 border-white rounded-lg p-6 text-white">
+//         <h2 className="text-3xl font-bold text-center mb-6">
+//           Brahmin Registration Form
+//         </h2>
+
+//         {/* Name & Username */}
+//         <div className="grid md:grid-cols-2 gap-4">
+//           <div>
+//             <label className="text-sm text-gray-300">Name:</label>
+//             <input
+//               type="text"
+//               name="name"
+//               value={formData.name}
+//               onChange={handleInputChange}
+//               placeholder="Enter your name"
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             />
+//             <p className="text-red-500 text-sm">{errors.name}</p>
+//           </div>
+//           <div>
+//             <label className="text-sm text-gray-300">Username:</label>
+//             <input
+//               type="text"
+//               name="username"
+//               value={formData.username}
+//               onChange={handleInputChange}
+//               placeholder="Choose a username"
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             />
+//             <p className="text-red-500 text-sm">{errors.username}</p>
+//           </div>
+//         </div>
+
+//         {/* Email & Phone */}
+//         <div className="grid md:grid-cols-2 gap-4 mt-4">
+//           <div>
+//             <label className="text-sm text-gray-300">Email:</label>
+//             <input
+//               type="email"
+//               name="email"
+//               value={formData.email}
+//               onChange={handleInputChange}
+//               placeholder="Enter your email"
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             />
+//             <p className="text-red-500 text-sm">{errors.email}</p>
+//           </div>
+//           <div>
+//             <label className="text-sm text-gray-300">Phone Number:</label>
+//             <input
+//               type="tel"
+//               name="phoneNumber"
+//               value={formData.phoneNumber}
+//               onChange={handleInputChange}
+//               placeholder="10-digit mobile number"
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             />
+//             <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
+//           </div>
+//         </div>
+
+//         {/* Password */}
+//         <div className="mt-4">
+//           <label className="text-sm text-gray-300">Password:</label>
+//           <input
+//             type="password"
+//             name="password"
+//             value={formData.password}
+//             onChange={handleInputChange}
+//             placeholder="Choose a password"
+//             className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//           />
+//           <p className="text-red-500 text-sm">{errors.password}</p>
+//         </div>
+
+//         {/* Country, State, City */}
+//         <div className="grid md:grid-cols-3 gap-4 mt-4">
+//           <div>
+//             <label className="text-sm text-gray-300">Country:</label>
+//             <input
+//               type="text"
+//               name="country"
+//               value={formData.country}
+//               onChange={handleInputChange}
+//               placeholder="Country"
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             />
+//             <p className="text-red-500 text-sm">{errors.country}</p>
+//           </div>
+//           <div>
+//             <label className="text-sm text-gray-300">State:</label>
+//             <input
+//               type="text"
+//               name="state"
+//               value={formData.state}
+//               onChange={handleInputChange}
+//               placeholder="State"
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             />
+//             <p className="text-red-500 text-sm">{errors.state}</p>
+//           </div>
+//           <div>
+//             <label className="text-sm text-gray-300">City:</label>
+//             <input
+//               type="text"
+//               name="city"
+//               value={formData.city}
+//               onChange={handleInputChange}
+//               placeholder="City"
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             />
+//             <p className="text-red-500 text-sm">{errors.city}</p>
+//           </div>
+//         </div>
+
+//         {/* Experience & Puja Type */}
+//         <div className="grid md:grid-cols-2 gap-4 mt-4">
+//           <div>
+//             <label className="text-sm text-gray-300">Experience (yrs):</label>
+//             <input
+//               type="range"
+//               name="experience"
+//               min="0"
+//               max="50"
+//               value={formData.experience}
+//               onChange={(e) =>
+//                 setFormData({
+//                   ...formData,
+//                   experience: Number(e.target.value),
+//                 })
+//               }
+//               className="w-full mt-2"
+//             />
+//             <p className="text-white">{formData.experience} years</p>
+//             <p className="text-red-500 text-sm">{errors.experience}</p>
+//           </div>
+//           <div>
+//             <label className="text-sm text-gray-300">Puja Type:</label>
+//             <select
+//               name="pujaType"
+//               value={formData.pujaType}
+//               onChange={handleInputChange}
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             >
+//               <option value="">Select Puja Type</option>
+//               <option value="Vedic Rituals">Vedic Rituals</option>
+//               <option value="Astrology">Astrology</option>
+//               <option value="Spiritual Healing">Spiritual Healing</option>
+//             </select>
+//             <p className="text-red-500 text-sm">{errors.pujaType}</p>
+//           </div>
+//           <div className="mt-4">
+//             <label className="text-sm text-gray-300">User Type:</label>
+//             <select
+//               name="userType"
+//               value={formData.userType}
+//               onChange={handleInputChange}
+//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
+//             >
+//               <option value="">Select user type</option>
+//               <option value="brahmin">Brahmin</option>
+//               <option value="user">User</option>
+//               <option value="admin">Admin</option>
+//             </select>
+//             <p className="text-red-500 text-sm">{errors.userType}</p>
+//           </div>
+//         </div>
+
+//         {/* Submit */}
+//         <button
+//           type="button"
+//           onClick={handleRegister}
+//           className="bg-blue-500 hover:bg-blue-500 mt-6 w-full py-2 rounded text-white font-semibold"
+//         >
+//           Register
+//         </button>
+
+//         <p className="text-sm text-center mt-4">
+//           Already registered?{" "}
+//           <span
+//             className="text-blue-400 underline cursor-pointer"
+//             onClick={() => router.push("/brahmin_login")}
+//           >
+//             Login here
+//           </span>
+//         </p>
+//       </form>
+//     </section>
+//   );
+// };
+
+// export default BrahminRegistration;
 "use client";
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+
 const BrahminRegistration = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    username: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     password: "",
-    confirmPassword: "",
+    aadharNumber: "",
+    address: "",
+    area: "",
     city: "",
-    specialization: "",
-    experience: 0,
-    profileImage: "",
+    state: "",
+    language: "",
+    registrationType: "brahmin",
+    experienceCategory: "",
+    experienceDetails: "",
+    poojaList: [] as string[],
   });
 
   const [errors, setErrors] = useState<any>({});
 
-  // Handle input change
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev: any) => ({ ...prev, [name]: "" }));
   };
 
-  // Handle image upload
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl: string = URL.createObjectURL(file);
-      setFormData((prev) => ({ ...prev, profileImage: imageUrl }));
-    }
+  const handleMultiSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const options = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setFormData((prev) => ({ ...prev, poojaList: options }));
   };
 
-  // Validate form
   const validateForm = () => {
     const newErrors: any = {};
 
-    if (!formData.name || formData.name.length < 3)
-      newErrors.name = "Name must be at least 3 characters";
-
+    if (!formData.firstName) newErrors.firstName = "First name is required";
+    if (!formData.username || formData.username.length < 3)
+      newErrors.username = "Username must be at least 3 characters";
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Valid email is required";
-
-    if (!formData.phone || !/^\d{10}$/.test(formData.phone))
-      newErrors.phone = "Phone number must be 10 digits";
-
-    if (!formData.city) newErrors.city = "Please select a city";
-
-    if (!formData.specialization)
-      newErrors.specialization = "Please select a specialization";
-
+    if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber))
+      newErrors.phoneNumber = "Phone number must be 10 digits";
     if (!formData.password || formData.password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
-
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.aadharNumber || formData.aadharNumber.length !== 12)
+      newErrors.aadharNumber = "Aadhar must be 12 digits";
+    if (!formData.address) newErrors.address = "Address is required";
+    if (!formData.city) newErrors.city = "City is required";
+    if (!formData.state) newErrors.state = "State is required";
+    if (!formData.language) newErrors.language = "Language is required";
+    if (!formData.registrationType)
+      newErrors.registrationType = "Type is required";
+    if (!formData.experienceCategory) newErrors.experienceCategory = "Required";
+    if (!formData.experienceDetails) newErrors.experienceDetails = "Required";
+    if (formData.poojaList.length === 0)
+      newErrors.poojaList = "Select at least one puja";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit form
   const handleRegister = async () => {
     if (!validateForm()) return;
 
-    // TODO: You can send formData to the backend here using Axios
     try {
+      const updatedFormData = {
+        ...formData,
+        poojaList: JSON.stringify(formData.poojaList), // stringify poojaList
+      };
+      console.log("Submitting data:", updatedFormData);
       const response = await axios.post(
-        "http://localhost:5000/api/register",
-        formData
+        "http://localhost:4002/api/brahmin/register",
+        updatedFormData
       );
       if (response.status === 200) {
-        alert("you are registered successfully");
+        alert("Registration successful!");
         router.push("/brahmin_login");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      alert("something went wrong. please try again");
+      alert("Something went wrong.");
     }
   };
 
   return (
-    <section className="relative bg-gradient-to-t from-pink-950 to-red-950 w-full h-full min-h-screen px-2 md:px-6 ">
-      <form className="absolute bg-opacity-40 shadow-lg bg-transparent h-auto w-[23rem] md:w-[40rem] border-2 border-white top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg p-6 ">
-        <div className="flex flex-col items-center mb-4 text-center">
-          <h2 className="text-3xl font-bold text-white my-2">
-            Brahmin Registration Form
-          </h2>
-          {formData.profileImage ? (
-            <img
-              src={formData.profileImage}
-              alt="Profile Preview"
-              className="w-24 h-24 rounded-full border-2 border-white mb-2 object-cover"
-            />
-          ) : (
-            <div className="w-24 h-24 rounded-full border-2 border-dashed border-white flex items-center justify-center text-white text-sm">
-              No Image
+    <section className="w-full min-h-screen bg-gradient-to-br from-pink-950 to-red-900 flex justify-center items-center px-4 py-12">
+      <form className="bg-white bg-opacity-10 backdrop-blur-md border border-white p-8 rounded-xl w-full max-w-3xl ">
+        <h2 className="text-3xl  font-bold text-center mb-6">
+          Brahmin Registration
+        </h2>
+
+        {/* Three-column name fields */}
+        <div className="grid md:grid-cols-3 gap-4 mb-4">
+          {["firstName", "middleName", "lastName"].map((field, idx) => (
+            <div key={idx}>
+              <label className="block">
+                {field.replace(/([A-Z])/g, " $1")}
+              </label>
+              <input
+                type="text"
+                name={field}
+                className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+                onChange={handleInputChange}
+              />
+              <p className="text-red-500 text-sm">{errors[field]}</p>
             </div>
-          )}
-          <label className="mt-2 text-white cursor-pointer bg-blue-600 px-3 py-1 rounded-md hover:bg-blue-700">
-            Upload Picture
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageChange}
-            />
-          </label>
+          ))}
         </div>
 
-        {/* Name */}
-        <p className="text-gray-500 text-sm">Name:</p>
-        <input
-          name="name"
-          type="text"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Enter Your Name"
-          className="w-full p-2 border-2 bg-slate-300 mt-2 rounded"
-        />
-        <p className="text-red-500 text-sm">{errors.name}</p>
+        {/* Username and Email */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block">Username</label>
+            <input
+              type="text"
+              name="username"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.username}</p>
+          </div>
+          <div>
+            <label className="block">Email</label>
+            <input
+              type="email"
+              name="email"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          </div>
+        </div>
 
-        {/* Email */}
-        <p className="text-gray-500 text-sm">Email:</p>
-        <input
-          name="email"
-          type="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          placeholder="Enter Your Email"
-          className="w-full p-2 border-2 text-gray-500 bg-slate-300 mt-2 rounded"
-        />
-        <p className="text-red-500 text-sm">{errors.email}</p>
+        {/* Phone and Password */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block">Phone Number</label>
+            <input
+              type="tel"
+              name="phoneNumber"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
+          </div>
+          <div>
+            <label className="block">Password</label>
+            <input
+              type="password"
+              name="password"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          </div>
+        </div>
 
-        {/* City & Specialization */}
-        <span className="flex gap-2">
-          <select
-            name="city"
-            value={formData.city}
-            onChange={handleInputChange}
-            className="w-full p-2 border-2 border-white text-gray-500 bg-slate-300 mt-2 rounded"
-          >
-            <option value="">Select a city</option>
-            <option value="Bhubneswar">Bhubneswar</option>
-            <option value="Cuttack">Cuttack</option>
-            <option value="Rasulgad">Rasulgad</option>
-            <option value="Puri">Puri</option>
-          </select>
-          <select
-            name="specialization"
-            value={formData.specialization}
-            onChange={handleInputChange}
-            className="w-full p-2 border-2 border-white text-gray-500 bg-slate-300 mt-2 rounded"
-          >
-            <option value="">Select specialization</option>
-            <option value="Vedic Rituals">Vedic Rituals</option>
-            <option value="Astrology">Astrology</option>
-            <option value="Spiritual Healing">Spiritual Healing</option>
-          </select>
-        </span>
-        <p className="text-red-500 text-sm">
-          {errors.city || errors.specialization}
-        </p>
+        {/* Aadhar and Language */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block">Aadhar Number</label>
+            <input
+              type="text"
+              name="aadharNumber"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.aadharNumber}</p>
+          </div>
+          <div>
+            <label className="block">Language</label>
+            <input
+              type="text"
+              name="language"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.language}</p>
+          </div>
+        </div>
 
-        {/* Phone */}
-        <p className="text-gray-500 text-sm">Phone Number:</p>
-        <input
-          name="phone"
-          type="tel"
-          value={formData.phone}
-          onChange={handleInputChange}
-          placeholder="Phone Number"
-          className="w-full p-2 border-2 mt-2 text-gray-500 bg-slate-300 rounded"
-        />
-        <p className="text-red-500 text-sm">{errors.phone}</p>
+        {/* Address and Area */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block">Address</label>
+            <textarea
+              name="address"
+              rows={2}
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.address}</p>
+          </div>
+          <div>
+            <label className="block">Area</label>
+            <input
+              type="text"
+              name="area"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
 
-        {/* Password */}
-        <p className="text-gray-500 text-sm">Password:</p>
-        <input
-          name="password"
-          type="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          placeholder="Password"
-          className="w-full p-2 border-2 mt-2 text-gray-500 bg-slate-300 rounded"
-        />
-        <p className="text-red-500 text-sm">{errors.password}</p>
+        {/* City and State */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block">City</label>
+            <input
+              type="text"
+              name="city"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.city}</p>
+          </div>
+          <div>
+            <label className="block">State</label>
+            <input
+              type="text"
+              name="state"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={handleInputChange}
+            />
+            <p className="text-red-500 text-sm">{errors.state}</p>
+          </div>
+        </div>
 
-        {/* Confirm Password */}
-        <p className="text-gray-500 text-sm">Confirm Password:</p>
-        <input
-          name="confirmPassword"
-          type="password"
-          value={formData.confirmPassword}
-          onChange={handleInputChange}
-          placeholder="Confirm Password"
-          className="w-full p-2 border-2 mt-2 text-gray-500 bg-slate-300 rounded"
-        />
-        <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
-
-        {/* Experience */}
-        <span className="flex items-center mt-2">
-          <p className="text-gray-500 text-sm mr-4">Experience:</p>
+        {/* Registration Type and Experience Category */}
+        <div>
+          <label className="block">Registration Type</label>
           <input
-            name="experience"
-            type="range"
-            min="0"
-            max="50"
-            value={formData.experience}
-            onChange={(e) =>
-              setFormData({ ...formData, experience: Number(e.target.value) })
-            }
-            className="w-full"
+            type="text"
+            name="registrationType"
+            className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
           />
-          <span className="text-white ml-2">{formData.experience} yrs</span>
-        </span>
+          <p className="text-red-500 text-sm">{errors.registrationType}</p>
+        </div>
+        <div>
+          <label className="block">Experience Category</label>
+          <input
+            type="text"
+            name="experienceCategory"
+            className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+            onChange={handleInputChange}
+          />
+          <p className="text-red-500 text-sm">{errors.experienceCategory}</p>
+        </div>
+        {/* Experience Details */}
+        <div className="mb-4">
+          <label className="block">Experience Details</label>
+          <textarea
+            name="experienceDetails"
+            rows={3}
+            className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+            onChange={handleInputChange}
+          />
+          <p className="text-red-500 text-sm">{errors.experienceDetails}</p>
+        </div>
+
+        {/* Pooja List */}
+        <div className="mb-4">
+          <label className="block">
+            Select Puja List (hold Ctrl to select multiple)
+          </label>
+          <select
+            multiple
+            name="poojaList"
+            className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+            onChange={handleMultiSelectChange}
+          >
+            <option value="Griha Pravesh">Griha Pravesh</option>
+            <option value="Satyanarayan Puja">Satyanarayan Puja</option>
+            <option value="Navagraha Puja">Navagraha Puja</option>
+            <option value="Mundan">Mundan</option>
+            <option value="Griha Pravesh">Griha Pravesh</option>
+            <option value="Satyanarayan Puja">Satyanarayan Puja</option>
+            <option value="Navagraha Puja">Navagraha Puja</option>
+            <option value="Mundan">Mundan</option>
+            <option value="Marriage Puja">Marriage Puja</option>
+            <option value="Shraddha Karma">Shraddha Karma</option>
+            <option value="Lakshmi Puja">Lakshmi Puja</option>
+            <option value="Durga Puja">Durga Puja</option>
+            <option value="Kali Puja">Kali Puja</option>
+            <option value="Saraswati Puja">Saraswati Puja</option>
+            <option value="Ganesh Puja">Ganesh Puja</option>
+            <option value="Rudrabhishek">Rudrabhishek</option>
+            <option value="Hanuman Puja">Hanuman Puja</option>
+            <option value="Bhumi Pujan">Bhumi Pujan</option>
+            <option value="Naamkaran">Naamkaran</option>
+            <option value="Upanayan Sanskar">
+              Upanayan Sanskar (Thread Ceremony)
+            </option>
+            <option value="Annaprashan">
+              Annaprashan (First Rice Ceremony)
+            </option>
+            <option value="Vastu Shanti Puja">Vastu Shanti Puja</option>
+            <option value="Chandi Path">Chandi Path</option>
+            <option value="Mahamrityunjaya Jaap">Mahamrityunjaya Jaap</option>
+            <option value="Pitru Dosh Nivaran Puja">
+              Pitru Dosh Nivaran Puja
+            </option>
+            <option value="Kal Sarp Dosh Puja">Kal Sarp Dosh Puja</option>
+            <option value="Rahu Ketu Shanti Puja">Rahu Ketu Shanti Puja</option>
+            <option value="Business Opening Puja">Business Opening Puja</option>
+            <option value="Vehicle Puja">Vehicle Puja</option>
+          </select>
+          <p className="text-red-500 text-sm">{errors.poojaList}</p>
+        </div>
 
         {/* Submit Button */}
         <button
           type="button"
           onClick={handleRegister}
-          className="bg-green-600 text-white mt-6 w-full p-2 rounded hover:bg-green-700"
+          className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded font-semibold text-white"
         >
           Register
         </button>
 
-        {/* Link to Login */}
-        <p className="text-white text-sm text-center mt-4">
+        <p className="text-sm text-center mt-4">
           Already registered?{" "}
           <span
-            onClick={() => router.push("/brahmin_login")}
             className="text-blue-400 underline cursor-pointer"
+            onClick={() => router.push("/brahmin_login")}
           >
             Login here
           </span>

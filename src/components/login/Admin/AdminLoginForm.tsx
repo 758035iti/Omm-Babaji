@@ -1,42 +1,48 @@
 "use client";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { bg3 } from "@/assets/login";
-
-// Define the form data structure
-interface AdminLoginFormData {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
-
-// Validation Schema
-const schema = yup.object().shape({
-  email: yup.string().required("Email is required").email("Invalid email format"),
-  password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
-});
+import React, { useState } from "react";
 
 export default function AdminLoginForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AdminLoginFormData>({
-    resolver: yupResolver(schema),
-    defaultValues: { rememberMe: false }, // ✅ Fix: Now TypeScript knows the structure
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    userType: "admin",
   });
 
-  const onSubmit = (data: AdminLoginFormData) => {
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.username || formData.username.length < 3) {
+      newErrors.username = "Username must be at least 3 characters";
+    }
+    if (!formData.password || formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+    if (formData.userType.toLowerCase() !== "admin") {
+      newErrors.userType = "User type must be 'admin'";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
     alert("Admin Login Successful!");
-    console.log("Admin Login Data:", data);
+    console.log("Admin Login Data:", formData);
+    // Redirect if needed
   };
 
   return (
-    <div className="relative bg-gradient-to-t from-pink-950 to-red-950 min-h-auto">
+    <div className="relative bg-gradient-to-t from-pink-950 to-red-950 min-h-screen">
       <div className="w-full h-[40rem]">
-        {/* <img src={bg3.src} className="w-full lg:h-[40rem] h-80 object-cover" alt="Background" /> */}
         <p className="absolute top-0 left-1/2 transform -translate-x-1/2 text-4xl text-white font-bold mt-8">
           Admin Login
         </p>
@@ -44,36 +50,45 @@ export default function AdminLoginForm() {
 
       <div className="flex justify-center items-center">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit}
           className="w-1/3 h-auto bg-transparent border-2 border-white rounded-lg absolute top-48 left-1/2 -translate-x-1/2 p-5 flex flex-col gap-3 shadow-lg"
         >
-          <label className="font-semibold text-gray-500">Email:</label>
+          <label className="font-semibold text-gray-500">Username:</label>
           <input
-            type="email"
-            {...register("email")}
-            placeholder="Enter Your Email"
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            placeholder="Enter Your Username"
             className="bg-slate-200 p-2 rounded"
           />
-          <p className="text-red-500 text-sm">{errors.email?.message}</p>
+          <p className="text-red-500 text-sm">{errors.username}</p>
 
           <label className="font-semibold text-gray-500">Password:</label>
           <input
             type="password"
-            {...register("password")}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             placeholder="Enter Your Password"
             className="bg-slate-200 p-2 rounded"
           />
-          <p className="text-red-500 text-sm">{errors.password?.message}</p>
+          <p className="text-red-500 text-sm">{errors.password}</p>
 
-          <div className="flex justify-between items-center">
-            <label className="flex items-center gap-2">
-              <input type="checkbox" {...register("rememberMe")} className="w-4 h-4 " />
-              <label className="font-semibold text-gray-300">Remember Me</label>
-            </label>
-            <a href="#" className="text-blue-500 hover:underline text-sm">Forgot Password?</a>
-          </div>
+          <label className="font-semibold text-gray-500">User Type:</label>
+          <input
+            type="text"
+            name="userType"
+            value={formData.userType}
+            readOnly
+            className="bg-slate-200 p-2 rounded text-gray-500 cursor-not-allowed"
+          />
+          <p className="text-red-500 text-sm">{errors.userType}</p>
 
-          <button type="submit" className="bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600 transition">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600 transition"
+          >
             Login
           </button>
         </form>

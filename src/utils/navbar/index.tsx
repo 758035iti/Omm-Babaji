@@ -1,4 +1,5 @@
 import { navArrType } from "@/types";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { SubmenuItem } from "@/types";
 export const navArr: navArrType[] = [
   {
@@ -33,6 +34,11 @@ export const navArr: navArrType[] = [
   },
   {
     id: 7,
+    title: "Profile",
+    url: "/profile",
+  },
+  {
+    id: 8,
     title: "Login",
     url: "/login",
     Submenu: [
