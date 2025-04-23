@@ -1,284 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// "use client";
-// import React, { useState, ChangeEvent } from "react";
-// import { useRouter } from "next/navigation";
-// import axios from "axios";
-
-// const BrahminRegistration = () => {
-//   const router = useRouter();
-
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     username: "",
-//     email: "",
-//     phoneNumber: "",
-//     password: "",
-//     country: "",
-//     state: "",
-//     city: "",
-//     experience: 0,
-//     pujaType: "",
-//     userType: "brahmin",
-//   });
-
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   const [errors, setErrors] = useState<any>({});
-//   // const [errors, setErrors] = useState<FormErrors>({});
-
-//   // inside validateForm:
-
-//   const handleInputChange = (
-//     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-//   ) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [name]: value }));
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//     setErrors((prev: any) => ({ ...prev, [name]: "" }));
-//   };
-
-//   const validateForm = () => {
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//     const newErrors: any = {};
-
-//     if (!formData.name || formData.name.length < 3)
-//       newErrors.name = "Name must be at least 3 characters";
-
-//     if (!formData.username || formData.username.length < 3)
-//       newErrors.username = "Username must be at least 3 characters";
-
-//     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email))
-//       newErrors.email = "Valid email is required";
-
-//     if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber))
-//       newErrors.phoneNumber = "Phone number must be 10 digits";
-
-//     if (!formData.password || formData.password.length < 6)
-//       newErrors.password = "Password must be at least 6 characters";
-
-//     if (!formData.country) newErrors.country = "Country is required";
-//     if (!formData.state) newErrors.state = "State is required";
-//     if (!formData.city) newErrors.city = "City is required";
-//     if (!formData.pujaType) newErrors.pujaType = "Puja Type is required";
-//     if (!formData.userType) newErrors.userType = "user Type is required";
-//     if (formData.experience <= 0)
-//       newErrors.experience = "Experience must be greater than 0";
-
-//     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0;
-//   };
-
-//   const handleRegister = async () => {
-//     if (!validateForm()) return;
-
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:4002/api/brahmin/register",
-//         formData
-//       );
-//       if (response.status === 200) {
-//         alert("You are registered successfully");
-//         router.push("/brahmin_login");
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       alert("Something went wrong. Please try again.");
-//     }
-//   };
-
-//   return (
-//     <section className="bg-gradient-to-t from-pink-950 to-red-950 w-full h-auto px-4 md:px-6 py-16 flex justify-center items-center">
-//       <form className="bg-opacity-40 shadow-lg bg-transparent w-full max-w-2xl border-2 border-white rounded-lg p-6 text-white">
-//         <h2 className="text-3xl font-bold text-center mb-6">
-//           Brahmin Registration Form
-//         </h2>
-
-//         {/* Name & Username */}
-//         <div className="grid md:grid-cols-2 gap-4">
-//           <div>
-//             <label className="text-sm text-gray-300">Name:</label>
-//             <input
-//               type="text"
-//               name="name"
-//               value={formData.name}
-//               onChange={handleInputChange}
-//               placeholder="Enter your name"
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             />
-//             <p className="text-red-500 text-sm">{errors.name}</p>
-//           </div>
-//           <div>
-//             <label className="text-sm text-gray-300">Username:</label>
-//             <input
-//               type="text"
-//               name="username"
-//               value={formData.username}
-//               onChange={handleInputChange}
-//               placeholder="Choose a username"
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             />
-//             <p className="text-red-500 text-sm">{errors.username}</p>
-//           </div>
-//         </div>
-
-//         {/* Email & Phone */}
-//         <div className="grid md:grid-cols-2 gap-4 mt-4">
-//           <div>
-//             <label className="text-sm text-gray-300">Email:</label>
-//             <input
-//               type="email"
-//               name="email"
-//               value={formData.email}
-//               onChange={handleInputChange}
-//               placeholder="Enter your email"
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             />
-//             <p className="text-red-500 text-sm">{errors.email}</p>
-//           </div>
-//           <div>
-//             <label className="text-sm text-gray-300">Phone Number:</label>
-//             <input
-//               type="tel"
-//               name="phoneNumber"
-//               value={formData.phoneNumber}
-//               onChange={handleInputChange}
-//               placeholder="10-digit mobile number"
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             />
-//             <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
-//           </div>
-//         </div>
-
-//         {/* Password */}
-//         <div className="mt-4">
-//           <label className="text-sm text-gray-300">Password:</label>
-//           <input
-//             type="password"
-//             name="password"
-//             value={formData.password}
-//             onChange={handleInputChange}
-//             placeholder="Choose a password"
-//             className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//           />
-//           <p className="text-red-500 text-sm">{errors.password}</p>
-//         </div>
-
-//         {/* Country, State, City */}
-//         <div className="grid md:grid-cols-3 gap-4 mt-4">
-//           <div>
-//             <label className="text-sm text-gray-300">Country:</label>
-//             <input
-//               type="text"
-//               name="country"
-//               value={formData.country}
-//               onChange={handleInputChange}
-//               placeholder="Country"
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             />
-//             <p className="text-red-500 text-sm">{errors.country}</p>
-//           </div>
-//           <div>
-//             <label className="text-sm text-gray-300">State:</label>
-//             <input
-//               type="text"
-//               name="state"
-//               value={formData.state}
-//               onChange={handleInputChange}
-//               placeholder="State"
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             />
-//             <p className="text-red-500 text-sm">{errors.state}</p>
-//           </div>
-//           <div>
-//             <label className="text-sm text-gray-300">City:</label>
-//             <input
-//               type="text"
-//               name="city"
-//               value={formData.city}
-//               onChange={handleInputChange}
-//               placeholder="City"
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             />
-//             <p className="text-red-500 text-sm">{errors.city}</p>
-//           </div>
-//         </div>
-
-//         {/* Experience & Puja Type */}
-//         <div className="grid md:grid-cols-2 gap-4 mt-4">
-//           <div>
-//             <label className="text-sm text-gray-300">Experience (yrs):</label>
-//             <input
-//               type="range"
-//               name="experience"
-//               min="0"
-//               max="50"
-//               value={formData.experience}
-//               onChange={(e) =>
-//                 setFormData({
-//                   ...formData,
-//                   experience: Number(e.target.value),
-//                 })
-//               }
-//               className="w-full mt-2"
-//             />
-//             <p className="text-white">{formData.experience} years</p>
-//             <p className="text-red-500 text-sm">{errors.experience}</p>
-//           </div>
-//           <div>
-//             <label className="text-sm text-gray-300">Puja Type:</label>
-//             <select
-//               name="pujaType"
-//               value={formData.pujaType}
-//               onChange={handleInputChange}
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             >
-//               <option value="">Select Puja Type</option>
-//               <option value="Vedic Rituals">Vedic Rituals</option>
-//               <option value="Astrology">Astrology</option>
-//               <option value="Spiritual Healing">Spiritual Healing</option>
-//             </select>
-//             <p className="text-red-500 text-sm">{errors.pujaType}</p>
-//           </div>
-//           <div className="mt-4">
-//             <label className="text-sm text-gray-300">User Type:</label>
-//             <select
-//               name="userType"
-//               value={formData.userType}
-//               onChange={handleInputChange}
-//               className="w-full p-2 mt-1 rounded bg-slate-300 text-black"
-//             >
-//               <option value="">Select user type</option>
-//               <option value="brahmin">Brahmin</option>
-//               <option value="user">User</option>
-//               <option value="admin">Admin</option>
-//             </select>
-//             <p className="text-red-500 text-sm">{errors.userType}</p>
-//           </div>
-//         </div>
-
-//         {/* Submit */}
-//         <button
-//           type="button"
-//           onClick={handleRegister}
-//           className="bg-blue-500 hover:bg-blue-500 mt-6 w-full py-2 rounded text-white font-semibold"
-//         >
-//           Register
-//         </button>
-
-//         <p className="text-sm text-center mt-4">
-//           Already registered?{" "}
-//           <span
-//             className="text-blue-400 underline cursor-pointer"
-//             onClick={() => router.push("/brahmin_login")}
-//           >
-//             Login here
-//           </span>
-//         </p>
-//       </form>
-//     </section>
-//   );
-// };
-
-// export default BrahminRegistration;
 "use client";
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -295,13 +15,14 @@ const BrahminRegistration = () => {
     email: "",
     phoneNumber: "",
     password: "",
+    aadharDocument: null as File | null,
     aadharNumber: "",
     address: "",
     area: "",
     city: "",
     state: "",
     language: "",
-    registrationType: "brahmin",
+    registrationType: "Brahmin",
     experienceCategory: "",
     experienceDetails: "",
     poojaList: [] as string[],
@@ -337,8 +58,9 @@ const BrahminRegistration = () => {
       newErrors.phoneNumber = "Phone number must be 10 digits";
     if (!formData.password || formData.password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
-    if (!formData.aadharNumber || formData.aadharNumber.length !== 12)
-      newErrors.aadharNumber = "Aadhar must be 12 digits";
+    if (!formData.aadharDocument) {
+      newErrors.aadharDocument = "Please upload your Aadhaar document";
+    }
     if (!formData.address) newErrors.address = "Address is required";
     if (!formData.city) newErrors.city = "City is required";
     if (!formData.state) newErrors.state = "State is required";
@@ -357,17 +79,16 @@ const BrahminRegistration = () => {
   const handleRegister = async () => {
     if (!validateForm()) return;
 
+    const formatedFormData = {
+      ...formData,
+      poojaList: JSON.stringify(formData.poojaList),
+    };
     try {
-      const updatedFormData = {
-        ...formData,
-        poojaList: JSON.stringify(formData.poojaList), // stringify poojaList
-      };
-      console.log("Submitting data:", updatedFormData);
       const response = await axios.post(
         "http://localhost:4002/api/brahmin/register",
-        updatedFormData
+        { ...formatedFormData }
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert("Registration successful!");
         router.push("/brahmin_login");
       }
@@ -452,25 +173,50 @@ const BrahminRegistration = () => {
 
         {/* Aadhar and Language */}
         <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div className="mb-4">
+            <label className="block">Aadhar Document</label>
+            <input
+              type="file"
+              name="aadhardocument"
+              accept=".pdf,.jpg,.jpeg,.png"
+              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+              onChange={(e) => {
+                if (e.target.files) {
+                  setFormData((prev: any) => ({
+                    ...prev,
+                    aadharDocument: e.target.files![0],
+                  }));
+                }
+              }}
+            />
+          </div>
           <div>
             <label className="block">Aadhar Number</label>
             <input
               type="text"
               name="aadharNumber"
               className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
-              onChange={handleInputChange}
+              onChange={(e) => {
+                if (e.target.files) {
+                  setFormData((prev: any) => ({
+                    ...prev,
+                    aadharNumber: e.target.value,
+                  }));
+                }
+              }}
             />
             <p className="text-red-500 text-sm">{errors.aadharNumber}</p>
-          </div>
-          <div>
-            <label className="block">Language</label>
-            <input
-              type="text"
-              name="language"
-              className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
-              onChange={handleInputChange}
-            />
-            <p className="text-red-500 text-sm">{errors.language}</p>
+
+            <div>
+              <label className="block">Language</label>
+              <input
+                type="text"
+                name="language"
+                className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
+                onChange={handleInputChange}
+              />
+              <p className="text-red-500 text-sm">{errors.language}</p>
+            </div>
           </div>
         </div>
 
@@ -522,15 +268,16 @@ const BrahminRegistration = () => {
         </div>
 
         {/* Registration Type and Experience Category */}
-        <div>
+        {/* <div>
           <label className="block">Registration Type</label>
           <input
             type="text"
             name="registrationType"
+            onChange={handleInputChange}
             className="w-full p-2 mt-1 rounded bg-slate-200 text-black"
           />
           <p className="text-red-500 text-sm">{errors.registrationType}</p>
-        </div>
+        </div> */}
         <div>
           <label className="block">Experience Category</label>
           <input
