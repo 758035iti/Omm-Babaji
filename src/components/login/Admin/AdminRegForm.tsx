@@ -7,13 +7,19 @@ export default function AdminRegForm() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     username: "",
     email: "",
     phoneNumber: "",
+    address: "",
     password: "",
-    confirmPassword: "",
-    userType: "admin",
+    registrationType: "admin",
+    aadharNumber: "",
+    area: "",
+    city: "",
+    state: "",
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -26,8 +32,12 @@ export default function AdminRegForm() {
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!formData.name || formData.name.length < 3) {
-      newErrors.name = "Name must be at least 3 characters long";
+
+    if (!formData.firstName || formData.firstName.length < 2) {
+      newErrors.firstName = "First Name must be at least 2 characters";
+    }
+    if (!formData.lastName || formData.lastName.length < 2) {
+      newErrors.lastName = "Last Name must be at least 2 characters";
     }
     if (!formData.username || formData.username.length < 3) {
       newErrors.username = "Username must be at least 3 characters";
@@ -36,17 +46,33 @@ export default function AdminRegForm() {
       newErrors.email = "Invalid email address";
     }
     if (!formData.phoneNumber || !/^[6-9]\d{9}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Invalid phone number";
+      newErrors.phoneNumber = "Invalid Indian phone number";
+    }
+    if (!formData.address || formData.address.length < 5) {
+      newErrors.address = "Address must be at least 5 characters";
     }
     if (!formData.password || formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
-    if (formData.confirmPassword !== formData.password) {
-      newErrors.confirmPassword = "Passwords must match";
+    if (
+      !formData.registrationType ||
+      formData.registrationType.toLowerCase() !== "admin"
+    ) {
+      newErrors.registrationType = "Registration Type must be 'admin'";
     }
-    if (formData.userType.toLowerCase() !== "admin") {
-      newErrors.userType = "User type must be 'admin'";
+    if (!formData.aadharNumber || !/^\d{12}$/.test(formData.aadharNumber)) {
+      newErrors.aadharNumber = "Aadhar number must be 12 digits";
     }
+    if (!formData.area) {
+      newErrors.area = "Area is required";
+    }
+    if (!formData.city) {
+      newErrors.city = "City is required";
+    }
+    if (!formData.state) {
+      newErrors.state = "State is required";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -56,124 +82,98 @@ export default function AdminRegForm() {
     if (!validate()) return;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/admin/register",
+        "http://localhost:5000/api/admin/updateProfile",
         formData
       );
       if (response.status === 200) {
-        alert("Admin Registered Successfully!");
-        router.push("/adminlogin");
+        alert("Profile Updated Successfully!");
+        router.push("/admin/profile");
       }
     } catch (error) {
       console.error(error);
-      alert("something went wrong. please try again");
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <div className="flex flex-col relative bg-gradient-to-t from-pink-950 to-red-950 min-h-screen">
-      <p className="absolute top-0 left-1/2 transform -translate-x-1/2 text-4xl text-white font-bold mt-2">
-        Register as an Admin
+    <div className="flex flex-col bg-gradient-to-t from-pink-950 to-red-950  lg:w-[100vw] lg:h-auto py-10">
+      <p className="text-4xl text-white font-bold mt-2 text-center">
+        Update Admin Profile
       </p>
 
-      <div className="flex justify-center items-center w-full h-full">
+      <div className="flex justify-center items-center w-auto h-auto ">
         <form
           onSubmit={handleSubmit}
-          className="w-1/3 bg-transparent border-2 border-white rounded-lg absolute top-14 left-1/2 -translate-x-1/2 p-5 flex flex-col gap-1 shadow-lg"
+          className="w-[40%] h-auto bg-transparent border-2 border-white rounded-lg  p-6 flex flex-col gap-2 shadow-lg my-6"
         >
-          <label className="font-semibold text-gray-500">name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter Your Name"
-            className="bg-slate-200 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.name}</p>
+          {[
+            { name: "firstName", label: "First Name" },
+            { name: "middleName", label: "Middle Name (optional)" },
+            { name: "lastName", label: "Last Name" },
+            { name: "username", label: "Username" },
+            { name: "email", label: "Email" },
+            { name: "phoneNumber", label: "Phone Number" },
+            { name: "address", label: "Address" },
+            { name: "aadharNumber", label: "Aadhar Number" },
+            { name: "area", label: "Area" },
+            { name: "city", label: "City" },
+            { name: "state", label: "State" },
+          ].map((field) => (
+            <div key={field.name}>
+              <label className="font-semibold text-gray-500">
+                {field.label}:
+              </label>
+              <input
+                type="text"
+                name={field.name}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                value={(formData as any)[field.name]}
+                onChange={handleChange}
+                placeholder={`Enter your ${field.label}`}
+                className="bg-slate-200 p-2 rounded w-full"
+              />
+              <p className="text-red-500 text-sm">{errors[field.name]}</p>
+            </div>
+          ))}
 
-          <label className="font-semibold text-gray-500">Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Enter Your Username"
-            className="bg-slate-200 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.username}</p>
+          {/* Password Fields */}
+          <div>
+            <label className="font-semibold text-gray-500">Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter Password"
+              className="bg-slate-200 p-2 rounded w-full"
+            />
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          </div>
 
-          <label className="font-semibold text-gray-500">Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter Your Email"
-            className="bg-slate-200 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.email}</p>
+          <div></div>
 
-          <label className="font-semibold text-gray-500">Phone Number:</label>
-          <input
-            type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            placeholder="Enter Your Phone Number"
-            className="bg-slate-200 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
+          {/* Registration Type (Disabled) */}
+          <div>
+            <label className="font-semibold text-gray-500">
+              Registration Type:
+            </label>
+            <input
+              type="text"
+              name="registrationType"
+              value={formData.registrationType}
+              disabled
+              className="bg-slate-200 p-2  lg:w-24 lg:h-5"
+            />
+            <p className="text-red-500 text-sm">{errors.registrationType}</p>
+          </div>
 
-          <label className="font-semibold text-gray-500">Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter Password"
-            className="bg-slate-200 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.password}</p>
-
-          <label className="font-semibold text-gray-500">
-            Confirm Password:
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm Password"
-            className="bg-slate-200 p-2 rounded"
-          />
-          <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
-
-          <label className="font-semibold text-gray-500">User Type:</label>
-          <input
-            type="text"
-            name="userType"
-            value={formData.userType}
-            onChange={handleChange}
-            className="bg-slate-200 p-2 rounded"
-            disabled // make it read-only to avoid tampering
-          />
-          <p className="text-red-500 text-sm">{errors.userType}</p>
-
+          {/* Submit */}
           <button
             type="submit"
             className="bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600 transition mt-3"
           >
-            Register
+            Update Profile
           </button>
-          <p className="text-sm text-white text-center mt-4">
-            Already registered?{" "}
-            <span
-              className="text-blue-400 underline cursor-pointer"
-              onClick={() => router.push("/adminlogin")}
-            >
-              Login here
-            </span>
-          </p>
         </form>
       </div>
     </div>
