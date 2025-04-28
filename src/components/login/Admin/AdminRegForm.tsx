@@ -1,256 +1,215 @@
 // "use client";
-// import { useState } from "react";
+// import React from "react";
+// import { useForm } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import * as yup from "yup";
+// import Link from "next/link";
 
-// const AdminRegister = () => {
-//   const [formData, setFormData] = useState({
-//     fullName: "",
-//     email: "",
-//     phone: "",
-//     username: "",
-//     password: "",
-//     confirmPassword: "",
-//     role: "Admin",
-//     terms: false,
-//   });
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-//     const target = e.target as HTMLInputElement | HTMLSelectElement;
-//     const { name, value, type } = target;
-//     const checked = (target as HTMLInputElement).checked; // Ensure checked is only accessed for checkboxes
-  
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: type === "checkbox" ? checked : value,
-//     }));
-//   };
-  
-//   const handleSubmit = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     console.log("Form Data:", formData);
-//   };
-
-//   return (
-//     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-//       <h2 className="text-2xl font-semibold text-center mb-4">Admin Registration</h2>
-//       <form onSubmit={handleSubmit} className="space-y-4">
-        
-//         {/* Full Name */}
-//         <input
-//           type="text"
-//           name="fullName"
-//           placeholder="Full Name"
-//           value={formData.fullName}
-//           onChange={handleChange}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-
-//         {/* Email */}
-//         <input
-//           type="email"
-//           name="email"
-//           placeholder="Email"
-//           value={formData.email}
-//           onChange={handleChange}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-
-//         {/* Phone */}
-//         <input
-//           type="tel"
-//           name="phone"
-//           placeholder="Phone Number"
-//           value={formData.phone}
-//           onChange={handleChange}
-//           className="w-full p-2 border rounded"
-//         />
-
-//         {/* Username */}
-//         <input
-//           type="text"
-//           name="username"
-//           placeholder="Username"
-//           value={formData.username}
-//           onChange={handleChange}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-
-//         {/* Password */}
-//         <input
-//           type="password"
-//           name="password"
-//           placeholder="Password"
-//           value={formData.password}
-//           onChange={handleChange}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-
-//         {/* Confirm Password */}
-//         <input
-//           type="password"
-//           name="confirmPassword"
-//           placeholder="Confirm Password"
-//           value={formData.confirmPassword}
-//           onChange={handleChange}
-//           className="w-full p-2 border rounded"
-//           required
-//         />
-
-//         {/* Role */}
-//         <select
-//           name="role"
-//           value={formData.role}
-//           onChange={handleChange}
-//           className="w-full p-2 border rounded"
-//         >
-//           <option value="Admin">Admin</option>
-//           <option value="Super Admin">Super Admin</option>
-//           <option value="Moderator">Moderator</option>
-//         </select>
-
-//         {/* Terms & Conditions */}
-//         <label className="flex items-center space-x-2">
-//           <input
-//             type="checkbox"
-//             name="terms"
-//             checked={formData.terms}
-//             onChange={handleChange}
-//             required
-//           />
-//           <span>Agree to Terms & Conditions</span>
-//         </label>
-
-//         {/* Submit Button */}
-//         <button
-//           type="submit"
-//           className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 "
-//         >
-//           Register
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default AdminRegister;
-
-
-// import { bg3 } from '@/assets/login'
-// import React from 'react'
+// const schema = yup.object().shape({
+//   firstName: yup.string().required(),
+//   middleName: yup.string(),
+//   lastName: yup.string().required(),
+//   username: yup.string().required().min(4),
+//   email: yup.string().required().email(),
+//   phoneNumber: yup.string().required().matches(/^[6-9]\d{9}$/),
+//   address: yup.string().required(),
+//   aadharNumber: yup.string().required().matches(/^\d{12}$/),
+//   aadharDocument: yup.mixed().required(),
+//   area: yup.string().required(),
+//   city: yup.string().required(),
+//   state: yup.string().required(),
+//   password: yup.string().required().min(6),
+//   registrationType: yup.string().required(),
+// });
 
 // export default function AdminRegForm() {
+//   const { register, handleSubmit } = useForm({
+//     resolver: yupResolver(schema),
+//   });
+
+//   const onSubmit = async (data: any) => {
+//     const formData = new FormData();
+//     Object.entries(data).forEach(([key, value]: any) => {
+//       formData.append(key, value);
+//     });
+
+//     if (data.aadharDocument && data.aadharDocument[0]) {
+//       formData.append("aadharDocument", data.aadharDocument[0]);
+//     }
+
+//     try {
+//       const res = await fetch("/api/admin-register", {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       const result = await res.json();
+//       if (res.ok) {
+//         alert("Registration Successful");
+//       } else {
+//         alert(result.error || "Registration Failed");
+//       }
+//     } catch (error) {
+//       console.error("Error:", error);
+//       alert("Something went wrong!");
+//     }
+//   };
+
 //   return (
-//     <div className='flex flex-col gap-2 relative'>
-//         <div className='h-auto w-full bg-amber-500'>
-//             <img src={bg3.src} className='w-full lg:h-[40rem] h-80 '/>
-//              <p className='absolute top-0 left-[38rem] text-4xl text-white font-bold mt-8 '>Register as a Admin</p>
-//         </div>
-//       <div className='flex justify-center items-center'>
-//       <form className='w-1/3 h-auto bg-white rounded-lg absolute top-28 left-1/2 -translate-x-1/2  p-3 gap-3 flex flex-col px-8'>
-//             Full Name: <input type='text' placeholder='Enter Your name'  required className='bg-slate-200 '/>
-//             Email: <input type='email' placeholder='Enter Your Email' required  className='bg-slate-200'/>
-//             Phone: <input type='tel' placeholder='Enter Your Phone' required  className='bg-slate-200'/>
-//             DOB: <input type='date' placeholder='Enter Your Phone' required  className='bg-slate-200'/>
-//             Password: <input type='password' placeholder='Enter Your Password' required  className='bg-slate-200'/>
-//             confirmPassword: <input type='password' placeholder='Confirm Your Password' required  className='bg-slate-200'/>
-//             <button className='bg-blue-500 text-white rounded-lg p-2'>Register</button>
-//       </form>
+//     <section className="relative bg-gradient-to-t from-pink-950 to-red-950 min-h-screen">
+//       <div className="p-6 max-w-3xl mx-auto">
+//         <h2 className="text-3xl font-bold mb-4 text-center text-white">Admin Registration</h2>
+//         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 border-2 p-8 rounded-lg shadow-lg bg-white">
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+//             <input {...register("firstName")} placeholder="First Name" className="input bg-gray-200" required />
+//             <input {...register("middleName")} placeholder="Middle Name" className="input bg-gray-200" />
+//             <input {...register("lastName")} placeholder="Last Name" className="input bg-gray-200" required />
+//           </div>
+
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+//             <input {...register("username")} placeholder="Username" className="input bg-gray-200" required minLength={4} />
+//             <input {...register("email")} type="email" placeholder="Email" className="input bg-gray-200" required />
+//           </div>
+
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+//             <input {...register("phoneNumber")} placeholder="Phone Number" className="input bg-gray-200" required pattern="^[6-9]\d{9}$" />
+//             <input {...register("address")} placeholder="Address" className="input bg-gray-200" required />
+//           </div>
+
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+//             <input {...register("aadharNumber")} placeholder="Aadhar Number" className="input bg-gray-200" required pattern="\d{12}" />
+//             <input {...register("aadharDocument")} type="file" className="input bg-gray-200" required />
+//           </div>
+
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+//             <input {...register("area")} placeholder="Area" className="input bg-gray-200" required />
+//             <input {...register("city")} placeholder="City" className="input bg-gray-200" required />
+//             <input {...register("state")} placeholder="State" className="input bg-gray-200" required />
+//           </div>
+
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+//             <input {...register("password")} type="password" placeholder="Password" className="input bg-gray-200" required minLength={6} />
+//             <select {...register("registrationType")} className="input bg-gray-200" required>
+//               <option value="">Select Registration Type</option>
+//               <option value="admin">Admin</option>
+//               <option value="superadmin">Super Admin</option>
+//             </select>
+//           </div>
+
+//           <button type="submit" className="bg-blue-500 w-full text-white px-4 py-2 rounded hover:bg-blue-600">
+//             Register
+//           </button>
+//           <p className="text-center text-gray-500">
+//             Already have an account?{" "}
+//             <Link href={'/AdminLoginForm'} className="text-blue-500 hover:underline">
+//               Login
+//             </Link>
+//           </p>
+//         </form>
 //       </div>
-//     </div>
-//   )
+//     </section>
+//   );
 // }
-
-
-
-
-
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useRouter } from "next/navigation"; // ✅ Import router
-
-// ✅ Yup Validation Schema
-const schema = yup.object().shape({
-  fullName: yup.string().required("Full Name is required").min(3, "Name must be at least 3 characters"),
-  email: yup.string().required("Email is required").email("Invalid email format"),
-  phone: yup
-    .string()
-    .required("Phone number is required")
-    .matches(/^[6-9]\d{9}$/, "Invalid phone number"),
-  dob: yup.string().required("Date of Birth is required"),
-  password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), undefined], "Passwords must match")
-    .required("Confirm Password is required"),
-});
+import axios from "axios";
+import Link from "next/link";
 
 export default function AdminRegForm() {
-  const router = useRouter(); // ✅ Initialize the router
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+    const phoneNumber = formData.get("phoneNumber") as string;
+    const aadharNumber = formData.get("aadharNumber") as string;
+    const password = formData.get("password") as string;
+    const aadharDocument = formData.get("aadharDocument") as File;
 
-  const onSubmit = (data: any) => {
-    alert("Admin Registered Successfully!");
-    console.log("Admin Data:", data);
+    if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
+      alert("Invalid phone number");
+      return;
+    }
 
-    // ✅ Redirect to login form after successful registration
-    router.push("/admin-login"); // Adjust the path as needed
+    if (!/^\d{12}$/.test(aadharNumber)) {
+      alert("Invalid Aadhar number");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters");
+      return;
+    }
+
+    if (!aadharDocument || aadharDocument.size === 0) {
+      alert("Please upload Aadhar document");
+      return;
+    }
+
+    try {
+      const res = await axios.post("/api/admin-register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("Registration Successful");
+      form.reset();
+    } catch (error: any) {
+      console.error("Error:", error);
+      alert(error?.response?.data?.error || "Registration failed");
+    }
   };
 
   return (
-    <div className="flex flex-col relative bg-gradient-to-t from-pink-950 to-red-950 min-h-screen">
-      <div className="h-auto w-full">
-        <p className="absolute top-0 left-1/2 transform -translate-x-1/2 text-4xl text-white font-bold mt-2">
-          Register as an Admin
-        </p>
-      </div>
+    <section className="relative bg-gradient-to-t from-pink-950 to-red-950 min-h-screen">
+      <div className="p-6 max-w-3xl mx-auto">
+        <h2 className="text-3xl font-bold mb-4 text-center text-white">Admin Registration</h2>
+        <form onSubmit={onSubmit} className="space-y-8 border-2 p-8 rounded-lg shadow-lg bg-white" encType="multipart/form-data">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <input name="firstName" placeholder="First Name" className="input bg-gray-200" required />
+            <input name="middleName" placeholder="Middle Name" className="input bg-gray-200" />
+            <input name="lastName" placeholder="Last Name" className="input bg-gray-200" required />
+          </div>
 
-      <div className="flex justify-center items-center w-full h-full">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-1/3 h-auto bg-transparent border-2 border-white rounded-lg absolute top-14 left-1/2 -translate-x-1/2 p-5 flex flex-col gap-1 shadow-lg"
-        >
-          <label className="font-semibold text-gray-500">Full Name:</label>
-          <input type="text" {...register("fullName")} placeholder="Enter Your Name" className="bg-slate-200 p-2 rounded" />
-          <p className="text-red-500 text-sm">{errors.fullName?.message}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <input name="username" placeholder="Username" className="input bg-gray-200" required minLength={4} />
+            <input name="email" type="email" placeholder="Email" className="input bg-gray-200" required />
+            <input name="phoneNumber" placeholder="Phone Number" className="input bg-gray-200" required />
+          </div>
 
-          <label className="font-semibold text-gray-500">Email:</label>
-          <input type="email" {...register("email")} placeholder="Enter Your Email" className="bg-slate-300 p-2 rounded" />
-          <p className="text-red-500 text-sm">{errors.email?.message}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <input name="address" placeholder="Address" className="input bg-gray-200" required />
+            <input name="aadharNumber" placeholder="Aadhar Number" className="input bg-gray-200" required />
+            <input name="aadharDocument" type="file" className="input bg-gray-200" required />
+          </div>
 
-          <label className="font-semibold text-gray-500">Phone:</label>
-          <input type="tel" {...register("phone")} placeholder="Enter Your Phone" className="bg-slate-300 p-2 rounded" />
-          <p className="text-red-500 text-sm">{errors.phone?.message}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <input name="area" placeholder="Area" className="input bg-gray-200" required />
+            <input name="city" placeholder="City" className="input bg-gray-200" required />
+            <input name="state" placeholder="State" className="input bg-gray-200" required />
+          </div>
 
-          <label className="font-semibold text-gray-500">Date of Birth:</label>
-          <input type="date" {...register("dob")} className="bg-slate-300 p-2 rounded" />
-          <p className="text-red-500 text-sm">{errors.dob?.message}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <input name="password" type="password" placeholder="Password" className="input bg-gray-200" required minLength={6} />
+            <select name="registrationType" className="input bg-gray-200" required>
+              <option value="">Select Registration Type</option>
+              <option value="admin">Admin</option>
+              <option value="superadmin">Super Admin</option>
+            </select>
+          </div>
 
-          <label className="font-semibold text-gray-500">Password:</label>
-          <input type="password" {...register("password")} placeholder="Enter Your Password" className="bg-slate-300 p-2 rounded" />
-          <p className="text-red-500 text-sm">{errors.password?.message}</p>
-
-          <label className="font-semibold text-gray-500">Confirm Password:</label>
-          <input type="password" {...register("confirmPassword")} placeholder="Confirm Your Password" className="bg-slate-300 p-2 rounded" />
-          <p className="text-red-500 text-sm">{errors.confirmPassword?.message}</p>
-
-          <button type="submit" className="bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600 transition onSubmit()" >
+          <button type="submit" className="bg-blue-500 w-full text-white px-4 py-2 rounded hover:bg-blue-600">
             Register
           </button>
+          <p className="text-center text-gray-500">
+            Already have an account?{" "}
+            <Link href="/AdminLoginForm" className="text-blue-500 hover:underline">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
-    </div>
+    </section>
   );
 }
