@@ -1,11 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 
 const BrahminLoginForm = () => {
-  const router = useRouter();
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -75,7 +72,6 @@ const BrahminLoginForm = () => {
       localStorage.setItem("userType", registrationType);
 
       alert("Login Successful!");
-      router.push("/brahmin_dashboard");
     } catch (error: unknown) {
       setLoading(false);
       if (axios.isAxiosError(error)) {

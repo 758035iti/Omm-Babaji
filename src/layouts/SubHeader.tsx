@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { navArr } from "@/utils/navbar";
 import Link from "next/link";
-
+import logo from "@/assets/Home/logo.jpg";
 export default function SubHeader() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -10,6 +10,11 @@ export default function SubHeader() {
     <div>
       <section className="hidden lg:block">
         <div className="flex justify-end items-center gap-5 text-red-900 p-5 shadow-2xl shadow-black relative">
+          <div className="absolute top-0 left-0 w-full h-20 bg-white">
+            <Link href={"/"}>
+              <img src={logo.src} className="justify-start w-24 h-20" />
+            </Link>
+          </div>
           {navArr.map((item) => {
             const isLogin = item.title === "Login";
 

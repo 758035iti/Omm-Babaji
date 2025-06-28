@@ -5,7 +5,8 @@ import axios from "axios";
 
 export default function UserRegForm() {
   const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+  // Form data state
   const [formData, setFormData] = useState<any>({
     firstName: "",
     middleName: "",
@@ -15,7 +16,6 @@ export default function UserRegForm() {
     phoneNumber: "",
     address: "",
     aadharNumber: "",
-    aadharDocument: "",
     area: "",
     city: "",
     state: "",
@@ -24,7 +24,10 @@ export default function UserRegForm() {
     registrationType: "Yajamana",
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // File state
+  const [userPhoto, setUserPhoto] = useState<File | null>(null);
+  const [aadharDocument, setAadharDocument] = useState<File | null>(null);
+
   const [errors, setErrors] = useState<any>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +35,18 @@ export default function UserRegForm() {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    if (files && files.length > 0) {
+      if (name === "userPhoto") {
+        setUserPhoto(files[0]);
+      } else if (name === "aadharDocument") {
+        setAadharDocument(files[0]);
+      }
+    }
+  };
+
   const validate = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newErrors: any = {};
     if (!formData.firstName || formData.firstName.length < 2)
       newErrors.firstName = "First Name must be at least 2 characters";
@@ -48,8 +61,8 @@ export default function UserRegForm() {
       newErrors.aadharNumber = "Aadhar must be 12 digits";
     if (!formData.password || formData.password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
-    // if (formData.password !== formData.confirmPassword)
-    //   newErrors.confirmPassword = "Passwords do not match";
+    if (!userPhoto) newErrors.userPhoto = "User photo is required";
+    if (!aadharDocument) newErrors.aadharDocument = "Aadhar document is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -58,17 +71,33 @@ export default function UserRegForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    console.log(formData, "hhhhs");
+
     try {
+      const data = new FormData();
+
+      // Append all form fields
+      Object.keys(formData).forEach((key) => {
+        data.append(key, formData[key]);
+      });
+
+      // Append files
+      if (userPhoto) data.append("userPhoto", userPhoto);
+      if (aadharDocument) data.append("aadharDocument", aadharDocument);
+
       const response = await axios.post(
         "http://localhost:4002/api/User/register",
-        formData
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
+
       if (response.status === 201) {
         alert("Registration successful!");
         router.push("/user_login");
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error);
       alert("Something went wrong. Please try again.");
@@ -84,6 +113,7 @@ export default function UserRegForm() {
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg grid grid-cols-1 md:grid-cols-2 gap-4"
+          encType="multipart/form-data"
         >
           {[
             { name: "firstName", label: "First Name" },
@@ -99,11 +129,6 @@ export default function UserRegForm() {
             { name: "state", label: "State" },
             { name: "language", label: "Language" },
             { name: "password", label: "Password", type: "password" },
-            // {
-            //   name: "confirmPassword",
-            //   label: "Confirm Password",
-            //   type: "password",
-            // },
             { name: "registrationType", label: "Registration Type" },
           ].map((field, index) => (
             <div key={index} className="flex flex-col">
@@ -114,7 +139,6 @@ export default function UserRegForm() {
                 name={field.name}
                 type={field.type || "text"}
                 placeholder={`Enter ${field.label}`}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 value={(formData as any)[field.name]}
                 onChange={handleChange}
                 className="bg-slate-100 p-2 rounded"
@@ -122,6 +146,32 @@ export default function UserRegForm() {
               <p className="text-red-500 text-sm">{errors[field.name]}</p>
             </div>
           ))}
+
+          {/* User Photo */}
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-700">User Photo:</label>
+            <input
+              type="file"
+              name="userPhoto"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="bg-slate-100 p-2 rounded"
+            />
+            <p className="text-red-500 text-sm">{errors.userPhoto}</p>
+          </div>
+
+          {/* Aadhar Document */}
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-700">Aadhar Document:</label>
+            <input
+              type="file"
+              name="aadharDocument"
+              accept=".pdf,image/*"
+              onChange={handleFileChange}
+              className="bg-slate-100 p-2 rounded"
+            />
+            <p className="text-red-500 text-sm">{errors.aadharDocument}</p>
+          </div>
 
           <div className="md:col-span-2">
             <button

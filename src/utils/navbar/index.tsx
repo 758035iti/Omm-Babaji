@@ -33,11 +33,6 @@ export const navArr: navArrType[] = [
     url: "/booking_process",
   },
   {
-    id: 7,
-    title: "Profile",
-    url: "/profile",
-  },
-  {
     id: 8,
     title: "Login",
     url: "/login",

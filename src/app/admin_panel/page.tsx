@@ -1,9 +1,9 @@
-import AdminLoginForm from "@/components/login/Admin/AdminLoginForm";
+import Panel from "@/components/login/Admin/Panel";
 import React from "react";
 export default function page() {
   return (
     <div>
-      <AdminLoginForm />
+      <Panel />
     </div>
   );
 }
